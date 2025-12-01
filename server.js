@@ -15,15 +15,26 @@ app.use(express.urlencoded({ extended: true }));
 const allowedOrigins = [
   "http://localhost:5173",
   "http://127.0.0.1:5173",
+  "https://darkblue-fly-926171.hostingersite.com", // live site
 ];
+
 app.use(
   cors({
     origin: (origin, cb) => {
-      if (!origin || allowedOrigins.includes(origin)) cb(null, true);
-      else cb(new Error("CORS not allowed"), false);
+      // origin can be undefined for tools or curl – allow that
+      if (!origin || allowedOrigins.includes(origin)) {
+        cb(null, true);
+      } else {
+        cb(new Error("CORS not allowed"), false);
+      }
     },
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type"],
   })
 );
+
+// STEP 2: handle preflight for this route
+app.options("/api/send-form", cors());
 
 // Email transporter
 const transporter = nodemailer.createTransport({
@@ -53,10 +64,11 @@ app.post("/api/send-form", async (req, res) => {
   const { name, email, phone, loanType, message, sourcePage } = req.body;
 
   if (!name || !email || !phone) {
-    return res.status(400).json({ success: false, error: "Missing required fields" });
+    return res
+      .status(400)
+      .json({ success: false, error: "Missing required fields" });
   }
 
-  // ---- Dynamic Subject Line ----
   let subjectLine = "New Submission Received";
 
   if (sourcePage === "Application Form") {
