@@ -19,7 +19,7 @@ const allowedOrigins = [
   "http://127.0.0.1:5173",
   "https://darkblue-fly-926171.hostingersite.com", // live test site
   "https://easywayloan.com",
-  "https://www.easywayloan.com",// live site
+  "https://www.easywayloan.com", // live site
 ];
 
 app.use(
@@ -39,6 +39,9 @@ app.use(
 
 // STEP 2: handle preflight for this route
 app.options("/api/send-form", cors());
+
+
+// Email transporter
 
 // Resend setup
 const resend = new Resend(process.env.RESEND_API_KEY);
