@@ -43,6 +43,7 @@ app.use(express.urlencoded({ extended: true }));
 const allowedOrigins = [
   "http://localhost:5173",        // local dev (Vite default)
   "http://127.0.0.1:5173",
+  "https://pink-goldfish-475332.hostingersite.com", // hostinger preview"
   "https://easywayloan.in",       // production (no www)
   "https://www.easywayloan.in"    // production with www
 ];
