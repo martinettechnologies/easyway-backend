@@ -146,7 +146,7 @@ app.post("/api/send-form", async (req, res) => {
       // Change 'from' to an address on your verified domain (e.g. no-reply@easywayloan.in)
       // after you add the DNS records Resend provides.
       from: "EasyWayLoan <onboarding@resend.dev>",
-      to: SEND_TO_EMAIL,
+      to: process.env.SEND_TO_EMAIL_TEST || SEND_TO_EMAIL,
       reply_to: safeEmail,
       subject: subjectLine,
       html,
